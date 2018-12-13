@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8>" />
+    <title>Rock Papaer Scissors</title>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <header><h1>Belka Amanda Samanta</h1></header>
+
+    <div class="score-board">
+      <div id="user-label" class="badge">user</div>
+      <div id="computer-label" class="badge">comp</div>
+      <span id="user-score">0</span> : <span id="computer-score">0</span>
+    </div>
+
+    <div class="result"><p>Wer wird zerst&ouml;rt?</p></div>
+
+    <div class="choices">
+      <div id="belka" class="choice">
+        <img
+          width="100"
+          height="100"
+          src="belka.png"
+        />
+      </div>
+      <div id="amanda" class="choice">
+        <img
+          width="100"
+          height="100"
+          src="amanta.png"
+        />
+      </div>
+      <div id="samanta" class="choice">
+        <img
+          width="100"
+          height="100"
+          src="samanda.png"
+        />
+      </div>
+
+      <p id="action-message">Wer ist stärker?</p>
+      <p><code> <a href="https://www.youtube.com/watch?v=jaVNP3nIAv0" title="Web Development Tutorial - JavaScript, HTML, CSS - belka amanda samanta Game" ></a></code></p>
+    </div>
+    <script type="text/javascript">
+      // cache the dom (storing for future use)
+// & reset everything to 0 value
+let userScore = 0;
+let computerScore = 0;
+const userScore_span = document.getElementById('user-score');
+const computerScore_span = document.getElementById('computer-score');
+const scoreBoard_div = document.querySelector('.score-board');
+const result_div = document.querySelector('.result');
+const belka_div = document.getElementById('belka');
+const amanda_div = document.getElementById('amanda');
+const samanta_div = document.getElementById('samanta');
+
+
+// set up the core function for the computer that will use math.random to loop through an array and return that value
+function getComputerChoice() {
+  const choices = ['belka', 'amanda', 'samanta'];
+  const randomNumber = Math.floor(Math.random() * 3);
+  return choices[randomNumber];
+}
+
+// similar to convertcase but just takes lowercase and replaces with titlecase
+function convertCase(anythingIwant) {
+  if (anythingIwant === 'amanda') return 'amanda';
+  if (anythingIwant === 'samanta') return 'samanta';
+  return 'belka';
+  //a
+}
+
+// Winning Condition - this handles what happens when the user clicks one of the choices where the value is them passed through as a parameter
+function win(user, computer) {
+  userScore++;
+  // console.log('user score is ' + userScore + ' ' + user);
+  userScore_span.innerHTML = userScore;
+  const userName = ' (user)'.fontsize(3).sup();
+  const compName = ' (comp)'.fontsize(3).sup();
+  result_div.innerHTML = `<p>${convertCase(user)}${userName} zerst&oumlrt ${convertCase(computer)}${compName}. Du hast gewonnen!</p>`;
+  const roundStatus = document.getElementById(user);
+  roundStatus.classList.add('winningStyles');
+  setTimeout(() => roundStatus.classList.remove('winningStyles'), 300);
+}
+
+// Losing Condition - this handles what happens when the user clicks one of the choices where the value is them passed through as a parameter
+function loses(user, computer) {
+  computerScore++;
+  // console.log('computer score is ' + computerScore + ' ' + computer);
+  computerScore_span.innerHTML = computerScore;
+  const userName = ' (user)'.fontsize(3).sup();
+  const compName = ' (comp)'.fontsize(3).sup();
+  result_div.innerHTML = `<p>${convertCase(computer)}${compName} zerst&oumlrt ${convertCase(user)}${userName}. Du hast verloren!</p>`;
+  const roundStatus = document.getElementById(user);
+  roundStatus.classList.add('losingStyles');
+  setTimeout(() => roundStatus.classList.remove('losingStyles'), 300);
+}
+
+// Draw Condition - this handles what happens when the user clicks one of the choices where the value is them passed through as a parameter
+function draw(user, computer) {
+  const userName = ' (user)'.fontsize(3).sup();
+  const compName = ' (comp)'.fontsize(3).sup();
+  result_div.innerHTML = `<p>It was a draw! You both chose ${convertCase(user)}</p>`;
+  // "It was a draw! You both chose " + user + " " + computer; // old js
+  const roundStatus = document.getElementById(user);
+  roundStatus.classList.add('drawStyles');
+  setTimeout(() => roundStatus.classList.remove('drawStyles'), 300);
+}
+
+// The core game functions that set up and determine the games actual logic aka amanda beats belka etc
+function game(userChoice) {
+  const computerChoice = getComputerChoice();
+  // console.log('Game function: user choice is = ' + userChoice);
+  // console.log('Game function: computer choice is = ' + computerChoice);
+
+  switch (userChoice + computerChoice) {
+    case 'amandabelka':
+    case 'belkasamanta':
+    case 'samantaamanda':
+      win(userChoice, computerChoice);
+      // console.log("user wins");
+      break;
+    case 'belkaamanda':
+    case 'samantabelka':
+    case 'amandasamanta':
+      loses(userChoice, computerChoice);
+      // console.log("computer wins");
+      break;
+    case 'belka':
+    case 'samantasamanta':
+    case 'amandaamanda':
+      draw(userChoice, computerChoice);
+      // console.log("draw");
+      break;
+  }
+}
+// ES5 style of writing this function
+// function main() {
+//   belka_div.addEventListener('click', function() {
+//     game('belka');
+//   });
+
+//   amanda_div.addEventListener('click', function() {
+//     game('amanda');
+//   });
+
+//   samanta_div.addEventListener('click', function() {
+//     game('samanta');
+//   });
+// }
+
+// ES6 style of writing this function
+// This function creates and adds an eventlistener to the belka, amanda samanta html element and the passes the value of that element to the game function
+function main() {
+  belka_div.addEventListener('click', () => game('belka'));
+  amanda_div.addEventListener('click', () => game('amanda'));
+  samanta_div.addEventListener('click', () => game('samanta'));
+}
+
+main();
+
+
+    </script>
+  </body>
+</html>
+
